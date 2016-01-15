@@ -3,6 +3,7 @@ bridge crane controlled with fuzzy-logic regulator (school project)
 
 website of the project: http://neuron.tuke.sk/labbancz/project.html
 
+
 you can simulate fuzzy regulator with MATLAB 2014b and higher
 
 to run application you need these libraries:
