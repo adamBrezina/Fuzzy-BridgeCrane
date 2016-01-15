@@ -1,7 +1,7 @@
 # Fuzzy-BridgeCrane
 ## bridge crane controlled with fuzzy-logic regulator (school project)
 
-## website of the project: **http://neuron.tuke.sk/labbancz/project.html**
+#### website of the project: **http://neuron.tuke.sk/labbancz/project.html**
 
 
 you can simulate fuzzy regulator with **MATLAB 2014b** and higher
