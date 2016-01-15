@@ -1,5 +1,5 @@
 # Fuzzy-BridgeCrane
-bridge crane controlled with fuzzy-logic regulator
+bridge crane controlled with fuzzy-logic regulator (school project)
 
 website of the project: http://neuron.tuke.sk/labbancz/project.html
 
