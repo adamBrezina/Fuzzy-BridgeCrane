@@ -1,0 +1,105 @@
+ FUNCTION_BLOCK dummy
+ 
+    VAR_INPUT
+        Range :             REAL; (* RANGE(-100 .. 100) *)
+        Speed:              REAL; (* RANGE(-10 .. 10)   *)
+        Alfa:               REAL; (* RANGE(-90 .. 90)   *)
+        AngularVelocity:    REAL; (*RANGE (-30 .. 30)   *)
+    END_VAR
+ 
+    VAR_OUTPUT
+        Power : REAL; (* RANGE(-30 .. 30) *)
+    END_VAR
+ 
+    FUZZIFY Range
+      TERM  VZ               := (-100, 0)(-99, 1) (-60, 1) (-40, 0) ;
+      TERM  SZ               := (-50, 0) (-30, 1) (-10, 0) ;
+      TERM  MZ               := (-12, 0) (-6, 1) (0, 0) ;
+      TERM  S                := (-2, 0) (0, 1) (2, 0) ;
+      TERM  MK               := (0, 0) (6, 1) (12, 0) ;
+      TERM  SK               := (10, 0) (30, 1) (50, 0) ;
+      TERM  VK               := (40, 0) (60, 1) (99, 1)(100, 0) ;
+        
+    END_FUZZIFY
+ 
+
+    FUZZIFY Speed
+      TERM  VZ               := (-10, 1) (-2.5, 1) (-2, 0) ;
+      TERM  SZ               := (-2.5, 0) (-2, 1) (-1, 0) ;
+      TERM  MZ               := (-1.5, 0) (-0.5, 1) (0, 0) ;
+      TERM  S                := (-0.1, 0) (0, 1) (0.1, 0) ;
+      TERM  MK               := (0, 0) (0.5, 1) (1.5, 0) ;
+      TERM  SK               := (1, 0) (1.75, 1) (2.5, 0) ;
+      TERM  VK               := (2, 0) (3, 1) (10, 1) ;
+    END_FUZZIFY
+
+
+    FUZZIFY Alfa
+      TERM  VZ               := (-100, 1) (-10, 1) (-5, 0) ;
+      TERM  MZ               := (-6, 0) (-3, 1) (0, 0) ;
+      TERM  S                := (-1, 0) (0, 1) (1, 0) ;
+      TERM  MK               := (0, 0) (3, 1) (6, 0) ;
+      TERM  VK               := (-5, 0) (10, 1) (-100, 1) ;
+    END_FUZZIFY
+
+    FUZZIFY AngularVelocity
+      TERM  K               := (-30, 0) (-20, 1) (0, 1) ;
+      TERM  Z               := (0, 1) (20, 1) (30, 0) ;
+    END_FUZZIFY
+
+    DEFUZZIFY Power
+        TERM VZ := (-30, 0)(-20.0, 1) (-6, 1) (-4, 0) ;
+        TERM MZ := (-5, 0)(-4, 1)(-2, 1)(0, 0 );
+        TERM S := (-0.1, 1)(0, 0)(0.1, 1) ;
+        TERM MK := (0, 0)(2, 1)(4, 1)(5, 0);
+        TERM VK := (4, 0)(6, 1)(20, 1)(30, 0);
+        
+        ACCU:MAX;
+
+        METHOD: COG;(*MoM;*)
+
+        DEFAULT := 0.0; 
+    END_DEFUZZIFY
+ 
+    RULEBLOCK first
+        AND:MIN;
+        (*ACCU:MAX;*)
+        RULE 0: IF (Range IS SK) AND (Speed IS VK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS VZ);
+        RULE 1: IF (Range IS MK) AND (Speed IS VK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS VZ); 
+        RULE 2: IF (Range IS S ) AND (Speed IS VK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS VZ);
+        RULE 3: IF (Range IS SK) AND (Speed IS S) THEN (Power IS MK);
+        RULE 4: IF (Range IS S ) AND (Speed IS S) THEN (Power IS S);
+        RULE 5: IF (Range IS VK) AND (Speed IS SK) AND (Alfa IS MK) AND (AngularVelocity IS K) THEN (Power IS MK); 
+        RULE 6: IF (Range IS VK) AND (Speed IS MK) AND (Alfa IS MK) AND (AngularVelocity IS K) THEN (Power IS VK);
+        RULE 7: IF (Range IS VK) AND (Speed IS SK) AND (Alfa IS VZ) AND (AngularVelocity IS Z) THEN (Power IS VZ); 
+        RULE 8: IF (Range IS VK) AND (Speed IS S) THEN (Power IS VK); 
+        RULE 9: IF (Range IS VK) AND (Speed IS SK) AND (Alfa IS VZ) AND (AngularVelocity IS Z) THEN (Power IS MZ); 
+        RULE 10:IF (Range IS SK) AND (Speed IS SK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS MZ); 
+        RULE 11:IF (Range IS SK) AND (Speed IS MK) AND (Alfa IS MK) AND (AngularVelocity IS K) THEN (Power IS MK);
+        RULE 12:IF (Range IS MK) AND (Speed IS SK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS VZ);
+        RULE 13:IF (Range IS MK) AND (Speed IS SK) AND (Alfa IS VZ) AND (AngularVelocity IS Z) THEN (Power IS VZ);
+        RULE 14:IF (Range IS MK) AND (Speed IS MK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS MZ);
+        RULE 15:IF (Range IS MK) AND (Speed IS MK) AND (Alfa IS VZ) AND (AngularVelocity IS Z) THEN (Power IS VZ);
+        RULE 16:IF (Range IS MK) AND (Speed IS MK) AND (Alfa IS VK) AND (AngularVelocity IS K) THEN (Power IS MK);
+        RULE 17:IF (Range IS MK) AND (Speed IS S) AND (Alfa IS MK) AND (AngularVelocity IS K) THEN (Power IS MK);
+		RULE 18:IF (Range IS MZ) AND (Speed IS S) THEN (Power IS MZ);
+		RULE 19:IF (Range IS SZ) AND (Speed IS S) THEN (Power IS MZ);
+		RULE 18:IF (Range IS MZ) AND (Speed IS MK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS MZ);
+        RULE 19:IF (Range IS MZ) AND (Speed IS S) THEN (Power IS MZ);
+        RULE 20:IF (Range IS VK) AND (Speed IS MK ) AND (Alfa IS VZ) AND (AngularVelocity IS Z) THEN (Power IS MZ);
+        RULE 21:IF (Range IS VK) AND (Speed IS MK ) AND (Alfa IS VK) AND (AngularVelocity IS K) THEN (Power IS VK);
+        RULE 22:IF (Range IS VK) AND (Speed IS S) AND (Alfa IS VK) AND (AngularVelocity IS K) THEN (Power IS VK);
+        RULE 23:IF (Range IS MZ) AND (Speed IS MK) THEN (Power IS MZ);
+        RULE 24:IF (Range IS MK) AND (Speed IS MZ) AND (Alfa IS MK) AND (AngularVelocity IS K) THEN (Power IS MK);
+        RULE 25:IF (Range IS VK) AND (Speed IS VK) AND (Alfa IS MZ) AND (AngularVelocity IS Z) THEN (Power IS MZ);
+        RULE 26:IF (Range IS MK) AND (Speed IS S) THEN (Power IS MK);
+        RULE 27:IF (Range IS VK) AND (Speed IS MZ) THEN (Power IS MK);
+        RULE 28:IF (Range IS VK) AND (Speed IS SZ) THEN (Power IS MK);
+
+        
+
+
+
+    END_RULEBLOCK
+ 
+END_FUNCTION_BLOCK
