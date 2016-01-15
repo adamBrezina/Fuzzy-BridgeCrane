@@ -4,6 +4,7 @@ bridge crane controlled with fuzzy-logic regulator
 website of the project: http://neuron.tuke.sk/labbancz/project.html
 
 to run you need these libraries:
+
 1. Visual Python
 
 2. SciPy
