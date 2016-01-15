@@ -4,7 +4,7 @@
 #### website of the project: http://neuron.tuke.sk/labbancz/project.html
 
 
-It is posible to simulate fuzzy regulator with **MATLAB 2014b** or higher with diplomovka.slx file
+It is posible to simulate fuzzy regulator with **MATLAB 2014b** or higher with **diplomovka.slx** file
 
 **In the App you can change:**
 - final position
