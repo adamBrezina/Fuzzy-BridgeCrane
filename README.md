@@ -6,7 +6,7 @@
 
 It is posible to simulate fuzzy regulator with **MATLAB 2014b** or higher with diplomovka.slx file
 
-In the App you can change:
+**In the App you can change:**
 - final position
 - length of rope
 - mass of cart
